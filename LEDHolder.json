@@ -1,0 +1,39 @@
+{
+    "parameterSets": {
+        "design default values": {
+            "baselength": "40",
+            "basethickness": "10",
+            "bracketheight": "13",
+            "capheaddiameter": "10.5",
+            "channelheight": "3",
+            "length": "155",
+            "lightangle": "15",
+            "lightfacewidth": "13",
+            "nontrack": "0",
+            "plug": "false",
+            "setupforprinting": "false",
+            "sidethickness": "10",
+            "template": "false",
+            "twoholes": "false",
+            "usehollowbracket": "false"
+        },
+        "TDISore": {
+            "baselength": "40",
+            "basethickness": "10",
+            "bracketheight": "13",
+            "capheaddiameter": "10.5",
+            "channelheight": "3",
+            "length": "155",
+            "lightangle": "15",
+            "lightfacewidth": "13",
+            "nontrack": "0",
+            "plug": "false",
+            "setupforprinting": "false",
+            "sidethickness": "10",
+            "template": "false",
+            "twoholes": "false",
+            "usehollowbracket": "false"
+        }
+    },
+    "fileFormatVersion": "1"
+}
