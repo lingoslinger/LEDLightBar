@@ -1,15 +1,14 @@
 // bracket that supports LED light strip
 
-// length of a half bracket
+// true if you are making two part brackets, false otherwise
+twopart = true;
+
+// length of a single part bracket, or half of a two part bracket
 length = 155;
 
-// non-track trailing length to support wiring connection - keep at 0, we are affixing the lights to the channel with the provided VHB tape
-nontrack = 0;
-
-// thickness of side that attaches to the car
-sidethickness = 10;
 // material where fasteners attach to the car
 bracketheight = 13;
+
 // length of base from car to LED support
 baselength = 40;
 // thickness of base attached to 
@@ -37,29 +36,26 @@ plug = false;
 // template for drilling holes for rivnuts
 template = false;
 
+// hole placement in mm from edge
+holeplacement = 10;
+
+// two fastener holes instead of 4 on two part brackets- currently unimplemented
+twoholes = false;
+
 // "hollow" bracket for less material - currently unimplemented
 usehollowbracket = false;
 
-// two fastener holes instead of 4 - currently unimplemented
-twoholes = false;
-
-// drivers side (false = passenger side) - wiring toward rear of car - not implemented
-// drivers = true;
-
-// calclulated value of extended length for "socket" support for wiring harness - DO NOT CHANGE
-xlength = length + (plug ? 0 : nontrack); 
-
 module squarebracket(st, sh, bt, bh) {
-    cube([xlength, bt, bh]);
+    cube([length, bt, bh]);
     translate([0, bt - st, bh]) {
-        cube([xlength, st, sh]);
+        cube([length, st, sh]);
     }
 }
 
 module curvedbracket() {
     translate([0, baselength, 0]){ 
         rotate([-90, 0, -90]){
-            linear_extrude(height = xlength)
+            linear_extrude(height = length)
             difference() {
                 resize([baselength * 2, bracketheight * 2])circle($fn=100); 
                 translate([-baselength, 0, 0]) { 
@@ -95,17 +91,17 @@ module ledtrack(h) {
     translate([0, yoffset, -h - zoffset]) {
         rotate([lightangle, 0, 0]) {
             difference() {
-                cube([xlength, lightfacewidth, channelheight]);
+                cube([length, lightfacewidth, channelheight]);
                 translate([0, 1.5, 0.5]) {
-                    cube([xlength, 10.2, 1.5]);
+                    cube([length, 10.2, 1.5]);
                 }
                 translate([0, 2.25, 0]) {
-                    cube([xlength, 8.7, 1.5]);
+                    cube([length, 8.7, 1.5]);
                 }
 
 
                 translate([length, 0, 0]) {
-                    cube([nontrack, 13, 1.5]);
+                    cube([0, 13, 1.5]);
                 }
 
             }
@@ -114,7 +110,7 @@ module ledtrack(h) {
 }
 
 module mountingholes(inset) {
-    holelength = xlength;
+    holelength = length;
     if (plug == true) {
         holelength = length;
     }
@@ -157,7 +153,7 @@ module hollowbracket(inset) {
     // use this again to calculate where the hollow part goes
     lightwidth =  (cos(lightangle) * lightfacewidth);
     translate([inset, lightwidth + 3, 0]) {
-        cube([xlength - 2 * inset, baselength - lightwidth + 3, bracketheight - 3]);
+        cube([length - 2 * inset, baselength - lightwidth + 3, bracketheight - 3]);
     }
     // get some angles in there to avoid supports
 }
@@ -165,22 +161,20 @@ module hollowbracket(inset) {
 module completeBracket() {
     if (plug) {
         curvedbracket();
-        // squarebracket(sidethickness, bracketheight, baselength, basethickness);
         plug();
-        lightbase(xlength);
+        lightbase(length);
     } else {
         difference() {
             curvedbracket();
-            // squarebracket(sidethickness, bracketheight, baselength, basethickness);
             socket();
         }
-       lightbase(xlength);
+       lightbase(length);
 
     }
 }
 
 module drillingholes(inset) {
-    holelength = xlength;
+    holelength = length;
     if (plug == true) {
         holelength = length;
     }
@@ -203,7 +197,7 @@ module drillingholes(inset) {
 module drillingtemplate() {
     rotate([90, 0, 0]) {
         difference() {
-            cube([xlength, 3, bracketheight]);
+            cube([length, 3, bracketheight]);
             drillingholes(10);
         }
     }
@@ -212,7 +206,7 @@ module drillingtemplate() {
 module mountablebracket() {
     difference() {
         completeBracket();
-        mountingholes(10);
+        mountingholes(holeplacement);
         // hollowbracket(20);
     }
     
