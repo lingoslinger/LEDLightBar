@@ -111,9 +111,9 @@ module ledtrack(h) {
 
 module mountingholes(inset) {
     holelength = length;
-    if (plug == true) {
-        holelength = length;
-    }
+    // if (plug == true) {
+    //     holelength = length;
+    // }
     rotate([90, 0, 0]) {
         translate([inset, bracketheight / 2, -baselength]) {
             cylinder(h=baselength, r = 5.5 / 2, $fn=100); 
@@ -173,6 +173,11 @@ module completeBracket() {
     }
 }
 
+module singlePieceBracket() {
+    curvedbracket();
+    lightbase(length);
+}
+
 module drillingholes(inset) {
     holelength = length;
     if (plug == true) {
@@ -205,7 +210,11 @@ module drillingtemplate() {
 
 module mountablebracket() {
     difference() {
-        completeBracket();
+        if (twopart == true) {
+            completeBracket();
+        } else { 
+            singlePieceBracket();
+        }
         mountingholes(holeplacement);
         // hollowbracket(20);
     }
